@@ -14,6 +14,19 @@ Recursos usados no projeto:
 8. CORS
 9. Padrão MVC (router, middleware, controller, service, model, database)
 
+## Video explicativo do Projeto
+
+https://youtu.be/GTL_H9AWARA
+
+## Algumas melhorias implementadas
+
+1. Implementação dos códigos de retorno 404 nas rotinas de find's do sistema.
+2. Na criação de Usuário, o sistema gerencia o email, não permitindo criar duplicado e evitando trocar no Update.
+3. Na adição de Endreços e Produtos favoritos ao Usuário, o sistema faz controle evitando adicionar ítens já adicionados bem como só excluindo ítens que existam nessas listas.
+4. Na adição de Produtos favoritos ao Usuario, Categorias ao Produto, produtos ao Carrinho e ao Pedido, o sistema faz checagem individualmente em todas as chaves correspondentes desses ítens se eles existem na base antes de adicioná-los. A tratativa também se extende a rotina de Update dos ítens.
+5. O campo de código de barras também de produtos é controlado, de maneira que não haja duplicação na criação, nem conflito quando houver um Update do mesmo, checando a base se ele está disponivel ou não.
+6. O sistema também trata a questão de endereços duplicados, categorias com mesmo nome, produtos com nomes iguais, evitando-os de serem cadastrados etc
+
 ## Instalação
 
 1. baixe todo o código

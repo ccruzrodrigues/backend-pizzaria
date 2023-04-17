@@ -1,0 +1,2610 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "API de Pizzaria com diversos CRUDs",
+		"description": "API - Pizzaria Cantinho dos Dev's",
+		"contact": {
+			"name": "Crislan Cruz",
+			"email": "crislancruz@hotmail.com"
+		},
+		"version": "1.0.0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000/",
+			"description": "API de Teste LOCAL"
+		},
+		{
+			"url": "https://aws222.amazon.com.br/cl01232ws/pizzaria",
+			"description": "API de Produção CLOUD"
+		}
+	],
+    "paths": {
+        "/usuario/findAll": {
+            "get": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Lista todos os usuários cadastrados na API",
+                "description":"Rota responsável por listar todos os usuários cadastrados na API",
+                "tags": ["Usuario"],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": { "type": "integer" },
+                        "name": "limit"
+                    },
+                    {
+                        "in": "query",
+                        "schema": { "type": "integer" },
+                        "name": "offset"
+                    }                    
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK tarefa realizada com sucesso!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Usuario"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "404": {
+                        "description": "Not found - Nenhum usuário encontrado",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/usuario/find/{id}": {
+            "get": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Lista o usuário correspondente ao Id informado",
+                "description":"Rota responsável por localizar um usuário através do Id informado",
+                "tags": ["Usuario"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna um usuario que foi encontrado atraves do id informado!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Usuario"
+                                    }
+                                }
+                            }
+                        }
+                    },                 
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "404": {
+                        "description": "Not found - Usuário especificado não encontrado",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/usuario/create": {
+            "post": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Cria um usuario novo",
+                "description":"Rota responsável por criar um novo usuário através das informações passadas no Endpoint",
+                "tags": ["Usuario"],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Usuario"
+                            }
+                        }
+                    },
+                    "required": "true"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Retorna o objeto criado no banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Usuario"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na criação do usuário. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/usuario/update/{id}": {
+            "put": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Atualiza as informações do usuário, conforme o Id informado como parâmetro.",
+                "description":"Rota responsável por atualizar as informações de usuário, conforme Id informado",
+                "tags": ["Usuario"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                  
+                ],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Usuario"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o objeto atualizado no banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Usuario"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na atualização do usuário. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/usuario/delete/{id}": {
+            "delete": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Remove o usuário correspondente ao Id informado",
+                "description":"Rota responsável por remover usuário através do Id informado",
+                "tags": ["Usuario"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o objeto deletado do banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Usuario"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na exclusão do usuário. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/usuario/addAddress/{id}": {
+            "post": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Adiciona o endereço de entrega no usuario correspondente ao Id informado.",
+                "description":"Rota responsável por adicionar endereços de entrega no usuario informado como parâmetro.",
+                "tags": ["Usuario"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                
+                ],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/UserAddress"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Retorna um usuario com seu novo endereço!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Usuario"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao adicionar endereço. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }            
+        },
+        "/usuario/removeAddress/{id}": {
+            "delete": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Remove um endereço de entrega do usuario conforme parâmetro Id especificado",
+                "description":"Rota responsável por remover endereços de entrega no usuario informado como parâmetro",
+                "tags": ["Usuario"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                
+                ],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": { "type": "string" }
+                                }
+                            }
+                        }
+                    },
+                    "required": "true"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna um usuario com o endereço removido!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Usuario"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na remoção do endereço. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }            
+        },
+        "/usuario/addFavProduct/{id}": {
+            "post": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Adiciona produtos favoritos ao usuario informado como parâmetro",
+                "description":"Rota responsável por adicionar produtos favoritos no usuario informado via parâmetro de Id",
+                "tags": ["Usuario"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }              
+                ],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/ProductFav"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Retorna um usuario com seu novo produto favoritado!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Usuario"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao favoritar produto no usuário. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }            
+         },
+        "/usuario/removeFavProduct/{id}": {
+            "delete": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Remove o produto favoritado no usuario passado como parâmetro.",
+                "description":"Rota responsável por remover produtos favoritados no usuario informado no parâmetro.",
+                "tags": ["Usuario"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                                 
+                ],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": { "type": "string" }
+                                }
+                            }
+                        }
+                    },
+                    "required": "true"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna um usuario com o produto favoritado removido!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/ProductFav"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro ao remover produto dos favoritos no usuário. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }            
+        },
+        "/produto/findAll": {
+            "get": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Lista todos os Produtos cadastrados na API",
+                "description":"Rota responsável por listar todos os produtos cadastrados na API",
+                "tags": ["Produto"],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": { "type": "integer" },
+                        "name": "limit"
+                    },
+                    {
+                        "in": "query",
+                        "schema": { "type": "integer" },
+                        "name": "offset"
+                    }                    
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK tarefa realizada com sucesso!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Produto"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "404": {
+                        "description": "Not found - Nenhum produto encontrado",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/produto/find/{id}": {
+            "get": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Lista o produto correspondente ao Id informado",
+                "description":"Rota responsável por localizar um produto específico através do Id informado",
+                "tags": ["Produto"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna um produto que foi encontrado atraves do id informado!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Produto"
+                                    }
+                                }
+                            }
+                        }
+                    },                 
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token"
+                    
+                    },
+                    "404": {
+                        "description": "Not found - Nenhum produto encontrado"
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor."
+                    }
+                }
+            }
+        },
+        "/produto/create": {
+            "post": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Cria um produto novo",
+                "description":"Rota responsável por criar um novo produto através das informações passadas no Endpoint",
+                "tags": ["Produto"],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Produto"
+                            }
+                        }
+                    },
+                    "required": "true"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Retorna o objeto criado no banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Produto"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na criação do produto. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/produto/update/{id}": {
+            "put": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Atualiza as informações do produto, conforme o Id informado como parâmetro.",
+                "description":"Rota responsável por atualizar as informações de produto, conforme Id informado",
+                "tags": ["Produto"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                  
+                ],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Produto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o objeto atualizado no banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Produto"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na atualização do usuário. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/produto/delete/{id}": {
+            "delete": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Remove o produto correspondente ao Id informado",
+                "description":"Rota responsável por remover um produto através do Id informado",
+                "tags": ["Produto"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o objeto deletado do banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Produto"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na exclusão do produto. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }              
+                }
+            }
+        }, 
+        "/produto/addCategoria/{id}": {
+            "post": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Adiciona uma categoria ao produto, correspondente ao Id informado.",
+                "description":"Rota responsável por adicionar categorias no produto informado como parâmetro.",
+                "tags": ["Produto"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                
+                ],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "_id": { "type": "string" }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Retorna um produto com sua nova categoria!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Produto"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na adição de categoria. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }            
+        },
+        "/produto/removeCategoria/{id}": {
+            "delete": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Remove uma categoria do produto conforme parâmetro Id especificado",
+                "description":"Rota responsável por remover categorias do produto informado como parâmetro",
+                "tags": ["Produto"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                
+                ],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": { "type": "string" }
+                                }
+                            }
+                        }
+                    },
+                    "required": "true"
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna um produto com o endereço removido!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Produto"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na exclusão da categoria. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }            
+        },
+        "/categoria/findAll": {
+            "get": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Lista todas as categorias cadastrados na API",
+                "description":"Rota responsável por listar todas as categorias cadastrados na API",
+                "tags": ["Categoria"],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": { "type": "integer" },
+                        "name": "limit"
+                    },
+                    {
+                        "in": "query",
+                        "schema": { "type": "integer" },
+                        "name": "offset"
+                    }                    
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK tarefa realizada com sucesso!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Categoria"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "404": {
+                        "description": "Not found - Nenhuma categoria encontrada",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/categoria/find/{id}": {
+            "get": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Lista a categoria correspondente ao Id informado",
+                "description":"Rota responsável por localizar uma categoria específica através do Id informado",
+                "tags": ["Categoria"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna uma categoria que foi encontrado atraves do id informado!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Categoria"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "404": {
+                        "description": "Not found - Nenhuma categoria encontrada",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/categoria/create": {
+            "post": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Cria uma categoria nova",
+                "description":"Rota responsável por criar uma nova categoria através das informações passadas no Endpoint",
+                "tags": ["Categoria"],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Categoria"
+                            }
+                        }
+                    },
+                    "required": "true"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Retorna o objeto criado no banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Categoria"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na criação da Categoria. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/categoria/update/{id}": {
+            "put": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Atualiza as informações da categoria, conforme o Id informado como parâmetro.",
+                "description":"Rota responsável por atualizar as informações da categoria, conforme Id informado",
+                "tags": ["Categoria"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                  
+                ],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Categoria"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o objeto atualizado no banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Categoria"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na atualização da categoria. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/categoria/delete/{id}": {
+            "delete": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Remove a categoria correspondente ao Id informado",
+                "description":"Rota responsável por remover categoria através do Id informado",
+                "tags": ["Categoria"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o objeto deletado do banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Categoria"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na exclusão da categoria. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }              
+                }
+            }
+        }, 
+        "/carrinho/findAll": {
+            "get": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Lista todos os carrinhos de compras cadastrados na API",
+                "description":"Rota responsável por listar todos os carrinhos de compras cadastrados na API",
+                "tags": ["Carrinho"],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": { "type": "integer" },
+                        "name": "limit"
+                    },
+                    {
+                        "in": "query",
+                        "schema": { "type": "integer" },
+                        "name": "offset"
+                    }                    
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK tarefa realizada com sucesso!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Carrinho"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "404": {
+                        "description": "Not found - Nenhum carrinho de compras encontrado",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/carrinho/find/{id}": {
+            "get": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Lista o carrinho de compras correspondente ao Id informado",
+                "description":"Rota responsável por localizar um carrinho de compras específico através do Id informado",
+                "tags": ["Carrinho"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna um carrinho de compras que foi encontrado atraves do id informado!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Carrinho"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "404": {
+                        "description": "Not found - Nenhum carrinho de compras encontrado",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/carrinho/create": {
+            "post": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Cria um carrinho de compras novo",
+                "description":"Rota responsável por criar um novo carrinho de compras através das informações passadas no Endpoint",
+                "tags": ["Carrinho"],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Carrinho"
+                            }
+                        }
+                    },
+                    "required": "true"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Retorna o objeto criado no banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Carrinho"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na criação do carrinho de compras. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/carrinho/update/{id}": {
+            "put": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Atualiza as informações do carrinho de compras, conforme o Id informado como parâmetro.",
+                "description":"Rota responsável por atualizar as informações do carrinho de compras, conforme Id informado",
+                "tags": ["Carrinho"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                  
+                ],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Carrinho"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorna o objeto atualizado no banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Carrinho"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na atualização do carrinho de compras. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/carrinho/delete/{id}": {
+            "delete": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Remove o carrinho de compras correspondente ao Id informado",
+                "description":"Rota responsável por remover o carrinho de compras através do Id informado",
+                "tags": ["Carrinho"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o objeto deletado do banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Carrinho"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na exclusão do carrinho de compras. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pedido/findAll": {
+            "get": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Lista todos os pedidos cadastrados na API",
+                "description":"Rota responsável por listar todos os pedidos cadastrados na API",
+                "tags": ["Pedido"],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "schema": { "type": "integer" },
+                        "name": "limit"
+                    },
+                    {
+                        "in": "query",
+                        "schema": { "type": "integer" },
+                        "name": "offset"
+                    }                    
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK tarefa realizada com sucesso!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Pedido"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "404": {
+                        "description": "Not found - Nenhum pedido encontrado",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pedido/find/{id}": {
+            "get": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Lista o pedido correspondente ao Id informado",
+                "description":"Rota responsável por localizar um pedido específico através do Id informado",
+                "tags": ["Pedido"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna um pedido que foi encontrado atraves do id informado!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Pedido"
+                                    }
+                                }
+                            }
+                        }
+                    },                 
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "404": {
+                        "description": "Not found - Nenhum Pedido encontrado",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pedido/create": {
+            "post": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Cria um pedido novo",
+                "description":"Rota responsável por criar um novo pedido através das informações passadas no Endpoint",
+                "tags": ["Pedido"],
+                "requestBody": {
+                    "content": { 
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Pedido"
+                            }
+                        }
+                    },
+                    "required": "true"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Retorna o objeto criado no banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Pedido"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na criação do pedido. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/pedido/updateStatus/{id}": {
+            "patch": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Atualiza para TRUE a informação de status CONCLUÍDO do pedido, conforme o Id informado como parâmetro.",
+                "description":"Rota responsável por concluir o pedido",
+                "tags": ["Pedido"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                  
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o objeto atualizado no banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Pedido"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na conclusão do pedido. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }               
+                }
+            }
+        },
+        "/pedido/delete/{id}": {
+            "delete": {
+                "security": [
+                    {"bearerAuth": []}
+                ],
+                "summary":"Remove o pedido correspondente ao Id informado",
+                "description":"Rota responsável por remover o pedido através do Id informado",
+                "tags": ["Pedido"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": "true",
+                        "schema": { "type": "string" },
+                        "name": "id"
+                    }                   
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o objeto deletado do banco!",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "items": {
+                                        "type": "object",
+                                        "$ref": "#/components/schemas/Pedido"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na exclusão do pedido. Cheque os parâmetros esperados e tente novamente (Bad Request)",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "401": {
+                        "description": "Unauthorized - Erro de autenticação. Problemas com o Token",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": { "type": "string" }
+                                    }    
+                                }
+                            }
+                        }                        
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Alguma coisa deu errado no Servidor.",
+                        "content": { 
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }    
+                                }
+                            }
+                        }
+                    }              
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "Usuario": {
+                "type": "object",
+                "properties": {
+                    "nome": {"type": "string"},
+                    "email": {"type": "string"},
+                    "senha": {"type": "string"}, 
+                    "imagem": {"type": "string"},
+                    "enderecos": {
+                        "type": "array",
+                        "items": {
+                            "properties": {   
+                                "logradouro": {"type": "string"},
+                                "numero": {"type": "number"},
+                                "complemento": {"type": "string"},
+                                "cep": {"type": "string"},
+                                "createdAt": {"type": "string"}
+                            }
+                        }
+                    },
+                    "produtos_fav": {
+                        "type": "array",
+                        "items": {   
+                            "properties": {     
+                                    "_id": {"type": "string"},
+                                    "createdAt": {"type": "string"}
+                            }
+                        }
+                    },
+                    "admin": {"type": "boolean"},
+                    "createdAt": {"type": "string"}
+                }
+            },
+            "UserAddress": {
+                "type": "array",
+                "items": {
+                    "properties": {   
+                        "logradouro": {"type": "string"},
+                        "numero": {"type": "number"},
+                        "complemento": {"type": "string"},
+                        "cep": {"type": "string"},
+                        "createdAt": {"type": "string"}
+                    }
+                }
+            },
+            "ProductFav": {
+                    "type": "array",
+                    "items": {   
+                        "properties": {     
+                                "_id": {"type": "string"},
+                                "createdAt": {"type": "string"}
+                        }
+                    }
+            },
+            "Produto": {
+                "type": "object",
+                "properties": {
+                    "nome": {"type": "string"},
+                    "descricao": {"type": "string"},
+                    "precoUnitario": {"type": "number"}, 
+                    "imagem": {"type": "string"},
+                    "codigoBarra": {"type": "number"}, 
+                    "categorias": {
+                        "type": "array",
+                        "items": {
+                            "properties": {   
+                                "_id": {"type": "string"},
+                                "createdAt": {"type": "string"}
+                            }
+                        }
+                    },
+                    "createdAt": {"type": "string"}
+                }
+            },
+            "Categoria": {
+                "type": "object",
+                "properties": {
+                    "nome": {"type": "string"},
+                    "descricao": {"type": "string"},
+                    "createdAt": {"type": "string"}
+                }
+            },
+            "Carrinho": {
+                "type": "object",
+                "properties": {
+                    "produtos": {
+                        "type": "array",
+                        "items": {
+                            "properties": {   
+                                "_id": {"type": "string"},
+                                "quantidade": {"type": "number"}
+                            }
+                        }
+                    },
+                    "precoTotal": {"type": "number"},
+                    "frete": {"type": "number"},
+                    "userId": {"type": "string"}, 
+                    "createdAt": {"type": "string"}
+                }
+            },
+            "Pedido": {
+                "type": "object",
+                "properties": {
+                    "produtos": {
+                        "type": "array",
+                        "items": {
+                            "properties": {   
+                                "_id": {"type": "string"},
+                                "quantidade": {"type": "number"}
+                            }
+                        }
+                    },
+                    "precoTotal": {"type": "number"},
+                    "frete": {"type": "number"},
+                    "userId": {"type": "string"}, 
+                    "createdAt": {"type": "string"},
+                    "concluido": {"type": "boolean"}
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "client": "Thunder Client",
+    "environmentName": "Backend-Pizzaria",
+    "dateExported": "2023-04-08T18:53:16.165Z",
+    "version": "1.0",
+    "variables": [
+        {
+            "name": "BaseURL",
+            "value": "http://127.0.0.1:"
+        },
+        {
+            "name": "Port",
+            "value": "3000"
+        },
+        {
+            "name": "Token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MmEwNzc3MzFiZGNmMmM5ZjA4NTc5NyIsImlhdCI6MTY4MDk3Mzc5MCwiZXhwIjoxNjgxMDYwMTkwfQ.rbanHTkBmWfIuzypq89Hg-h-zuozdyUWzJ8soorsYys"
+        }
+    ]
+}
